@@ -14,7 +14,6 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
-import MyHome from './MyHome';
 import { Badge, Collapse, InputAdornment, TextField } from '@mui/material';
 import { ExpandLess, ExpandMore } from '@mui/icons-material';
 import NotificationsIcon from '@mui/icons-material/Notifications';
@@ -23,6 +22,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import DashboardIcon from '@mui/icons-material/Dashboard';
+import { Link } from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -71,7 +71,7 @@ const DrawerHeader = styled('div')(({ theme }) => ({
     justifyContent: 'flex-end',
 }));
 
-export default function MyLayout() {
+export default function MyLayout(props) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
@@ -215,15 +215,21 @@ export default function MyLayout() {
                     </ListItemButton>
                     <Collapse in={list1Open} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
-                            <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText sx={{ color: "#838897" }} primary="Users" />
-                            </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText sx={{ color: "#838897" }} primary="Profiles" />
-                            </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText sx={{ color: "#838897" }} primary="Groups" />
-                            </ListItemButton>
+                            <Link style={{ textDecoration: "none" }} to='/'>
+                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                    <ListItemText sx={{ color: "#838897" }} primary="Users" />
+                                </ListItemButton>
+                            </Link>
+                            <Link style={{ textDecoration: "none" }} to='/profiles'>
+                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                    <ListItemText sx={{ color: "#838897" }} primary="Profiles" />
+                                </ListItemButton>
+                            </Link>
+                            <Link style={{ textDecoration: "none" }} to='/groups'>
+                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                    <ListItemText sx={{ color: "#838897" }} primary="Groups" />
+                                </ListItemButton>
+                            </Link>
                         </List>
                     </Collapse>
                     <ListItemButton onClick={() => setList2Open(!list2Open)}>
@@ -232,15 +238,21 @@ export default function MyLayout() {
                     </ListItemButton>
                     <Collapse in={list2Open} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
-                            <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText sx={{ color: "#838897" }} primary="Users" />
-                            </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText sx={{ color: "#838897" }} primary="Profiles" />
-                            </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText sx={{ color: "#838897" }} primary="Groups" />
-                            </ListItemButton>
+                            <Link style={{ textDecoration: "none" }} to='/'>
+                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                    <ListItemText sx={{ color: "#838897" }} primary="Users" />
+                                </ListItemButton>
+                            </Link>
+                            <Link style={{ textDecoration: "none" }} to='/profiles'>
+                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                    <ListItemText sx={{ color: "#838897" }} primary="Profiles" />
+                                </ListItemButton>
+                            </Link>
+                            <Link style={{ textDecoration: "none" }} to='/groups'>
+                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                    <ListItemText sx={{ color: "#838897" }} primary="Groups" />
+                                </ListItemButton>
+                            </Link>
                         </List>
                     </Collapse>
                     <ListItemButton onClick={() => setList3Open(!list3Open)}>
@@ -249,15 +261,21 @@ export default function MyLayout() {
                     </ListItemButton>
                     <Collapse in={list3Open} timeout="auto" unmountOnExit>
                         <List component="div" disablePadding>
-                            <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText sx={{ color: "#838897" }} primary="Users" />
-                            </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText sx={{ color: "#838897" }} primary="Profiles" />
-                            </ListItemButton>
-                            <ListItemButton sx={{ pl: 4 }}>
-                                <ListItemText sx={{ color: "#838897" }} primary="Groups" />
-                            </ListItemButton>
+                            <Link style={{ textDecoration: "none" }} to='/'>
+                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                    <ListItemText sx={{ color: "#838897" }} primary="Users" />
+                                </ListItemButton>
+                            </Link>
+                            <Link style={{ textDecoration: "none" }} to='/profiles'>
+                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                    <ListItemText sx={{ color: "#838897" }} primary="Profiles" />
+                                </ListItemButton>
+                            </Link>
+                            <Link style={{ textDecoration: "none" }} to='/groups'>
+                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                    <ListItemText sx={{ color: "#838897" }} primary="Groups" />
+                                </ListItemButton>
+                            </Link>
                         </List>
                     </Collapse>
                     <ListItem disablePadding>
@@ -268,7 +286,7 @@ export default function MyLayout() {
                 </List>      </Drawer>
             <Main open={open} sx={{ bgcolor: "#f8fafb" }}>
                 <DrawerHeader />
-                <MyHome />
+                {props.children}
             </Main>
         </Box>
     );
