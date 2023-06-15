@@ -23,8 +23,9 @@ import HelpOutlineIcon from '@mui/icons-material/HelpOutline';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import { Link } from 'react-router-dom';
+import Clock from './Clock.js';
 
-const drawerWidth = 240;
+const drawerWidth = 280;
 
 const Main = styled('main', { shouldForwardProp: (prop) => prop !== 'open' })(
     ({ theme, open }) => ({
@@ -75,6 +76,7 @@ export default function MyLayout(props) {
     const theme = useTheme();
     const [open, setOpen] = React.useState(false);
 
+
     const handleDrawerOpen = () => {
         setOpen(true);
     };
@@ -120,7 +122,7 @@ export default function MyLayout(props) {
                             component="div"
                             sx={{ display: { xs: 'none', sm: 'block' } }}
                         >
-                            Tue Jan 12,2021 9:39Am
+                            <Clock />
                         </Typography>
                     </Box>
 
@@ -186,22 +188,24 @@ export default function MyLayout(props) {
                     <img src={Logo} style={{ width: "60%", }} alt='logo' />
                 </Box>
 
-                <TextField
-                    id="search"
-                    type="search"
-                    placeholder="Quick Access"
-                    value={searchTerm}
-                    onChange={setSearchTerm}
-                    sx={{ width: '230px', backgroundColor: "white", borderRadius: '20px' }}
-                    size='small'
-                    InputProps={{
-                        endAdornment: (
-                            <InputAdornment position="end">
-                                <SearchIcon />
-                            </InputAdornment>
-                        ),
-                    }}
-                />
+                <Box sx={{ pl: "10px", pr: '10px ' }}>
+                    <TextField
+                        id="search"
+                        type="search"
+                        placeholder="Quick Access"
+                        value={searchTerm}
+                        onChange={setSearchTerm}
+                        sx={{ width: '100%', backgroundColor: "white", borderRadius: '20px' }}
+                        size='small'
+                        InputProps={{
+                            endAdornment: (
+                                <InputAdornment position="end">
+                                    <SearchIcon />
+                                </InputAdornment>
+                            ),
+                        }}
+                    />
+                </Box>
                 <Box sx={{ display: "flex", marginTop: "20px", marginLeft: "20px", alignItems: "center" }}>
                     <DashboardIcon sx={{ color: "#838897" }} />
                     <Typography sx={{ marginLeft: "20px", color: "#838897", fontSize: "20px" }}>Dashboard</Typography>
@@ -209,80 +213,104 @@ export default function MyLayout(props) {
 
                 <Typography sx={{ color: "#838897", margin: "30px 0px 0px 20px", opacity: "0.7", textTransform: "uppercase", fontSize: "14px" }}>Settings</Typography>
                 <List>
-                    <ListItemButton onClick={() => setList1Open(!list1Open)}>
-                        <ListItemText sx={{ color: "#838897" }} primary={'ATM Settings'} />
-                        {list1Open ? <ExpandLess sx={{ color: "#838897" }} /> : <ExpandMore sx={{ color: "#838897" }} />}
-                    </ListItemButton>
-                    <Collapse in={list1Open} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            <Link style={{ textDecoration: "none" }} to='/'>
-                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
-                                    <ListItemText sx={{ color: "#838897" }} primary="Users" />
-                                </ListItemButton>
-                            </Link>
-                            <Link style={{ textDecoration: "none" }} to='/profiles'>
-                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
-                                    <ListItemText sx={{ color: "#838897" }} primary="Profiles" />
-                                </ListItemButton>
-                            </Link>
-                            <Link style={{ textDecoration: "none" }} to='/groups'>
-                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
-                                    <ListItemText sx={{ color: "#838897" }} primary="Groups" />
-                                </ListItemButton>
-                            </Link>
-                        </List>
-                    </Collapse>
-                    <ListItemButton onClick={() => setList2Open(!list2Open)}>
-                        <ListItemText sx={{ color: "#838897" }} primary={'Business Setup'} />
-                        {list2Open ? <ExpandLess sx={{ color: "#838897" }} /> : <ExpandMore sx={{ color: "#838897" }} />}
-                    </ListItemButton>
-                    <Collapse in={list2Open} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            <Link style={{ textDecoration: "none" }} to='/'>
-                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
-                                    <ListItemText sx={{ color: "#838897" }} primary="Users" />
-                                </ListItemButton>
-                            </Link>
-                            <Link style={{ textDecoration: "none" }} to='/profiles'>
-                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
-                                    <ListItemText sx={{ color: "#838897" }} primary="Profiles" />
-                                </ListItemButton>
-                            </Link>
-                            <Link style={{ textDecoration: "none" }} to='/groups'>
-                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
-                                    <ListItemText sx={{ color: "#838897" }} primary="Groups" />
-                                </ListItemButton>
-                            </Link>
-                        </List>
-                    </Collapse>
-                    <ListItemButton onClick={() => setList3Open(!list3Open)}>
-                        <ListItemText sx={{ color: "#838897" }} primary={'User Management'} />
-                        {list3Open ? <ExpandLess sx={{ color: "#838897" }} /> : <ExpandMore sx={{ color: "#838897" }} />}
-                    </ListItemButton>
-                    <Collapse in={list3Open} timeout="auto" unmountOnExit>
-                        <List component="div" disablePadding>
-                            <Link style={{ textDecoration: "none" }} to='/'>
-                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
-                                    <ListItemText sx={{ color: "#838897" }} primary="Users" />
-                                </ListItemButton>
-                            </Link>
-                            <Link style={{ textDecoration: "none" }} to='/profiles'>
-                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
-                                    <ListItemText sx={{ color: "#838897" }} primary="Profiles" />
-                                </ListItemButton>
-                            </Link>
-                            <Link style={{ textDecoration: "none" }} to='/groups'>
-                                <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
-                                    <ListItemText sx={{ color: "#838897" }} primary="Groups" />
-                                </ListItemButton>
-                            </Link>
-                        </List>
-                    </Collapse>
-                    <ListItem disablePadding>
-                        <ListItemButton>
-                            <ListItemText sx={{ color: "#838897" }} primary={'License Management'} />
+                    <Box sx={{ pr: "7px", pl: '7px' }}>
+                        <ListItemButton onClick={() => setList1Open(!list1Open)}
+                            sx={{
+                                '&:hover': { backgroundColor: "#22a565" },
+                                '&:hover .MuiListItemText-primary': { color: 'white' },
+                                bgcolor: list1Open ? "#22a565" : "#050e2d", color: list1Open ? "white" : "#838897"
+                            }}>
+                            <ListItemText sx={{}} primary={'ATM Settings'} />
+                            {list1Open ? <ExpandLess sx={{ color: list1Open ? "white" : "#838897" }} /> : <ExpandMore sx={{ color: list1Open ? "white" : "#838897" }} />}
                         </ListItemButton>
-                    </ListItem>
+                        <Collapse in={list1Open} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding sx={{ bgcolor: list1Open ? "#1e2642" : "#838897" }}>
+                                <Link style={{ textDecoration: "none" }} to='/'>
+                                    <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                        <ListItemText sx={{ color: "#838897" }} primary="Users" />
+                                    </ListItemButton>
+                                </Link>
+                                <Link style={{ textDecoration: "none" }} to='/profiles'>
+                                    <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                        <ListItemText sx={{ color: "#838897" }} primary="Profiles" />
+                                    </ListItemButton>
+                                </Link>
+                                <Link style={{ textDecoration: "none" }} to='/groups'>
+                                    <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                        <ListItemText sx={{ color: "#838897" }} primary="Groups" />
+                                    </ListItemButton>
+                                </Link>
+                            </List>
+                        </Collapse>
+                    </Box>
+                    <Box sx={{ pr: "7px", pl: '7px' }}>
+                        <ListItemButton onClick={() => setList2Open(!list2Open)}
+                            sx={{
+                                '&:hover': { backgroundColor: "#22a565", color: "white" },
+                                '&:hover .MuiListItemText-primary': { color: 'white' },
+                                bgcolor: list2Open ? "#22a565" : "#050e2d", color: list2Open ? "white" : "#838897"
+                            }}>
+                            <ListItemText sx={{ color: "#838897" }} primary={'Business Setup'} />
+                            {list2Open ? <ExpandLess sx={{ color: list1Open ? "white" : "#838897" }} /> : <ExpandMore sx={{ color: list1Open ? "white" : "#838897" }} />}
+                        </ListItemButton>
+                        <Collapse in={list2Open} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding>
+                                <Link style={{ textDecoration: "none" }} to='/'>
+                                    <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                        <ListItemText sx={{ color: "#838897" }} primary="Users" />
+                                    </ListItemButton>
+                                </Link>
+                                <Link style={{ textDecoration: "none" }} to='/profiles'>
+                                    <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                        <ListItemText sx={{ color: "#838897" }} primary="Profiles" />
+                                    </ListItemButton>
+                                </Link>
+                                <Link style={{ textDecoration: "none" }} to='/groups'>
+                                    <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                        <ListItemText sx={{ color: "#838897" }} primary="Groups" />
+                                    </ListItemButton>
+                                </Link>
+                            </List>
+                        </Collapse>
+                    </Box>
+
+                    <Box sx={{ pr: "7px", pl: '7px' }}>
+                        <ListItemButton onClick={() => setList3Open(!list3Open)}
+                            sx={{
+                                '&:hover': { backgroundColor: "#22a565" },
+                                '&:hover .MuiListItemText-primary': { color: 'white' },
+                                bgcolor: list3Open ? "#22a565" : "#050e2d", color: list3Open ? "white" : "#838897"
+                            }}>
+                            <ListItemText sx={{ color: "#838897" }} primary={'User Management'} />
+                            {list3Open ? <ExpandLess sx={{ color: list1Open ? "white" : "#838897" }} /> : <ExpandMore sx={{ color: list1Open ? "white" : "#838897" }} />}
+                        </ListItemButton>
+                        <Collapse in={list3Open} timeout="auto" unmountOnExit>
+                            <List component="div" disablePadding>
+                                <Link style={{ textDecoration: "none" }} to='/'>
+                                    <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                        <ListItemText sx={{ color: "#838897" }} primary="Users" />
+                                    </ListItemButton>
+                                </Link>
+                                <Link style={{ textDecoration: "none" }} to='/profiles'>
+                                    <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                        <ListItemText sx={{ color: "#838897" }} primary="Profiles" />
+                                    </ListItemButton>
+                                </Link>
+                                <Link style={{ textDecoration: "none" }} to='/groups'>
+                                    <ListItemButton sx={{ pl: 4, textDecoration: "none" }}>
+                                        <ListItemText sx={{ color: "#838897" }} primary="Groups" />
+                                    </ListItemButton>
+                                </Link>
+                            </List>
+                        </Collapse>
+                    </Box>
+                    <Box sx={{ pr: "7px", pl: '7px' }}>
+                        <ListItem disablePadding>
+                            <ListItemButton>
+                                <ListItemText sx={{ color: "#838897" }} primary={'License Management'} />
+                            </ListItemButton>
+                        </ListItem>
+                    </Box>
                 </List>      </Drawer>
             <Main open={open} sx={{ bgcolor: "#f8fafb" }}>
                 <DrawerHeader />

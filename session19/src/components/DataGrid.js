@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Box, Button, FormControl, IconButton, InputAdornment, MenuItem, Select, TextField, Typography, ThemeProvider,createTheme } from '@mui/material'
+import { Box, Button, FormControl, IconButton, InputAdornment, MenuItem, Select, TextField, Typography, ThemeProvider, createTheme } from '@mui/material'
 import { DataGrid } from '@mui/x-data-grid';
 import SearchIcon from "@mui/icons-material/Search";
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
@@ -10,6 +10,7 @@ import DoDisturbAltIcon from '@mui/icons-material/DoDisturbAlt';
 import EditIcon from '@mui/icons-material/Edit';
 import HttpsIcon from '@mui/icons-material/Https';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import FileDownloadIcon from '@mui/icons-material/FileDownload';
 
 const columns = [
     { field: 'name', headerName: 'Name', width: 270 },
@@ -21,31 +22,57 @@ const columns = [
 ];
 
 
-export default function DataTable({ data, togglemodalWithData, filterData }) {
+export default function DataTable({ data, togglemodalWithData, deleteUsers, filterUsers }) {
     const [search, setSearch] = React.useState("");
+    const [usernameSearch, setUsernameSearch] = React.useState('')
+    const [userState, setUserState] = React.useState("any");
+    const [selectedRows, setSelectedRows] = React.useState([]);
 
     const getRowData = (e) => {
         togglemodalWithData(e.row)
     }
 
-    const searchData = (e) => {
+    const searchUsersByAnyKey = (e) => {
         setSearch(e.target.value)
-        filterData(e.target.value)
+        filterUsers(e.target.value, usernameSearch, userState)
     }
 
+    const handleSearchByUsername = (e) => {
+        setUsernameSearch(e.target.value)
+        filterUsers(search, e.target.value, userState)
+    }
+
+    const handleUserStateChange = (e) => {
+        setUserState(e.target.value)
+        filterUsers(search, usernameSearch, e.target.value)
+    }
+
+    const deleteDataOfUsers = () => {
+        console.log(selectedRows)
+        deleteUsers(selectedRows)
+    }
+
+    const handleSelectionChange = (newSelection) => {
+        setSelectedRows(newSelection);
+    };
+
+    const handleDeselectAll = () => {
+        setSelectedRows([]);
+    };
+
     const theme = createTheme({
-        components:{
-            MuiDataGrid:{
-                styleOverrides:{
-                    cell:{
-                        fontSize:"17px"
+        components: {
+            MuiDataGrid: {
+                styleOverrides: {
+                    cell: {
+                        fontSize: "17px"
                     },
-                    columnHeader:{
-                        fontSize:"17px",
-                        color:"#8c97ad",
+                    columnHeader: {
+                        fontSize: "17px",
+                        color: "#8c97ad",
                     },
-                    columnHeaders:{
-                        backgroundColor:"#f8fafb"
+                    columnHeaders: {
+                        backgroundColor: "#f8fafb"
                     }
                 }
             }
@@ -59,7 +86,7 @@ export default function DataTable({ data, togglemodalWithData, filterData }) {
                     <TextField
                         size="small"
                         variant="outlined"
-                        onChange={searchData}
+                        onChange={searchUsersByAnyKey}
                         value={search}
                         placeholder='Search'
                         InputProps={{
@@ -75,19 +102,20 @@ export default function DataTable({ data, togglemodalWithData, filterData }) {
                         size="small"
                         variant="outlined"
                         placeholder='User Name'
+                        value={usernameSearch}
+                        onChange={handleSearchByUsername}
                     />
 
                     <Box sx={{ minWidth: 160, marginLeft: "18px" }}>
                         <FormControl fullWidth>
-                            <Select size="small" defaultValue={1}>
-                                <MenuItem value={1}>Any</MenuItem>
-                                <MenuItem value={2}>Option 2</MenuItem>
-                                <MenuItem value={3}>Option 3</MenuItem>
+                            <Select value={userState} size="small" onChange={handleUserStateChange}>
+                                <MenuItem selected value='any'>Any</MenuItem>
+                                <MenuItem value="locked" >Locked</MenuItem>
+                                <MenuItem value="active">Active</MenuItem>
+                                <MenuItem value="inactive">Inactive</MenuItem>
                             </Select>
                         </FormControl>
                     </Box>
-
-
 
                     <LocalizationProvider sx={{ paddingTop: "0px" }} dateAdapter={AdapterDayjs}>
                         <DemoContainer sx={{ marginLeft: "18px", paddingTop: "0px" }} components={['DatePicker']}>
@@ -99,39 +127,53 @@ export default function DataTable({ data, togglemodalWithData, filterData }) {
                     <Typography sx={{ color: "blue", marginLeft: "18px" }}>All Filters</Typography>
                 </Box>
 
-                <Box sx={{ display: "flex", alignItems: "center", marginTop: "10px", marginBottom: "10px", paddingLeft: "20px" }}>
-                    <Typography variant='p' sx={{ marginRight: "10px" }}>1 selected</Typography>
-                    <Typography variant='p' sx={{ marginRight: "10px" }}>|</Typography>
+                <Box sx={{ display: "flex", justifyContent: "space-between" }}>
 
-                    <IconButton sx={{ borderRadius: "5px", color: "#51576d", bgcolor: "#e7e9ef", marginRight: "10px" }} variant="contained" color="secondary">
-                        <EditIcon />
-                    </IconButton>
-                    <IconButton sx={{ borderRadius: "5px", color: "#51576d", bgcolor: "#e7e9ef", marginRight: "10px" }} variant="contained" color="secondary">
-                        <DoDisturbAltIcon />
-                    </IconButton>
-                    <IconButton sx={{ borderRadius: "5px", color: "#51576d", bgcolor: "#e7e9ef", marginRight: "10px" }} variant="contained" color="secondary">
-                        <HttpsIcon />
-                    </IconButton>
-                    <Button sx={{ color: "#51576d", bgcolor: "#e7e9ef", textTransform: "capitalize", marginRight: "10px" }}>Assign to Profile</Button>
-                    <Button sx={{ color: "#51576d", bgcolor: "#e7e9ef", textTransform: "capitalize", marginRight: "10px" }}>Assign to Group</Button>
-                    <IconButton sx={{ borderRadius: "5px", color: "#51576d", bgcolor: "#e7e9ef", marginRight: "10px" }} variant="contained" color="secondary">
-                        <MoreVertIcon />
-                    </IconButton>
-                    <Typography variant='p' sx={{ margin: "0", marginRight: "10px", textDecoration: "underline" }}>Unselect all</Typography>
-                </Box >
+                    <Box sx={{ display: "flex", alignItems: "center", marginTop: "10px", marginBottom: "10px", paddingLeft: "20px" }}>
+                        <Typography variant='p' sx={{ marginRight: "10px" }}>{`${selectedRows.length} selected`}</Typography>
+                        <Typography variant='p' sx={{ marginRight: "10px" }}>|</Typography>
+
+                        <IconButton sx={{ borderRadius: "5px", color: "#51576d", bgcolor: "#e7e9ef", marginRight: "10px" }} variant="contained" color="secondary">
+                            <EditIcon />
+                        </IconButton>
+                        <IconButton onClick={deleteDataOfUsers} sx={{ borderRadius: "5px", color: "#51576d", bgcolor: "#e7e9ef", marginRight: "10px" }} variant="contained" color="secondary">
+                            <DoDisturbAltIcon />
+                        </IconButton>
+                        <IconButton sx={{ borderRadius: "5px", color: "#51576d", bgcolor: "#e7e9ef", marginRight: "10px" }} variant="contained" color="secondary">
+                            <HttpsIcon />
+                        </IconButton>
+                        <Button sx={{ color: "#51576d", bgcolor: "#e7e9ef", textTransform: "capitalize", marginRight: "10px" }}>Assign to Profile</Button>
+                        <Button sx={{ color: "#51576d", bgcolor: "#e7e9ef", textTransform: "capitalize", marginRight: "10px" }}>Assign to Group</Button>
+                        <IconButton sx={{ borderRadius: "5px", color: "#51576d", bgcolor: "#e7e9ef", marginRight: "10px" }} variant="contained" color="secondary">
+                            <MoreVertIcon />
+                        </IconButton>
+                        <Typography onClick={handleDeselectAll} variant='p' sx={{ margin: "0", marginRight: "10px", textDecoration: "underline", cursor: 'pointer' }}>Unselect all</Typography>
+                    </Box >
+
+                    <Box sx={{ display: "flex", alignItems: "center", marginTop: "10px", marginBottom: "10px", paddingLeft: "20px" }}>
+                        <IconButton sx={{ borderRadius: "5px", color: "#51576d", bgcolor: "#e7e9ef", marginRight: "10px" }} variant="contained" color="secondary">
+                            <FileDownloadIcon />
+                        </IconButton>
+                    </Box>
+
+
+                </Box>
 
                 <ThemeProvider theme={theme} >
                     <DataGrid
                         rows={data}
                         columns={columns}
+                        disableColumnMenu
+                        pageSizeOptions={[5, 10]}
+                        onRowClick={getRowData}
+                        checkboxSelection
+                        rowSelectionModel={selectedRows}
+                        onRowSelectionModelChange={handleSelectionChange}
                         initialState={{
                             pagination: {
                                 paginationModel: { page: 0, pageSize: 10 },
                             },
                         }}
-                        pageSizeOptions={[5, 10]}
-                        checkboxSelection
-                        onRowClick={getRowData}
                     />
                 </ThemeProvider>
             </Box>

@@ -7,7 +7,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Box, FormControl, MenuItem, Select, Typography, styled } from '@mui/material';
 
-export default function Modal({ modalValue, toggleModal, addNewUser, dataToEdit, allData, setAllData, editMode, handleEditMode }) {
+export default function Modal({ modalValue, toggleModal, addNewUser, dataToEdit, editMode, handleEditMode, editUser }) {
 
     const [name, SetName] = React.useState('')
     const [username, SetUsername] = React.useState('')
@@ -15,6 +15,15 @@ export default function Modal({ modalValue, toggleModal, addNewUser, dataToEdit,
     const [group, SetGroup] = React.useState('')
     const [id, setId] = React.useState(12)
     const [status, setStatus] = React.useState('')
+
+    const BlackTextButton = styled(Button)(({ theme }) => ({
+        color: '#000',
+        border: `1px solid ${theme.palette.grey[500]}`,
+        margin: "20px 20px 10px 0",
+        fontSize: "17px",
+        textTransform: "capitalize",
+        fontWeight: "bold"
+    }));
 
     React.useEffect(() => {
         if (editMode) {
@@ -43,17 +52,9 @@ export default function Modal({ modalValue, toggleModal, addNewUser, dataToEdit,
         SetGroup(' ')
         setStatus(' ')
     }
-    const BlackTextButton = styled(Button)(({ theme }) => ({
-        color: '#000',
-        border: `1px solid ${theme.palette.grey[500]}`,
-        margin: "20px 20px 10px 0",
-        fontSize: "17px",
-        textTransform: "capitalize",
-        fontWeight: "bold"
-    }));
 
-    const editUser = () => {
-        const newObj = {
+    const saveUserEdit = () => {
+        const newUserData = {
             name,
             username,
             email,
@@ -62,10 +63,8 @@ export default function Modal({ modalValue, toggleModal, addNewUser, dataToEdit,
             status,
             createdOn: dataToEdit.createdOn
         }
-        const arr = [...allData];
-        const index = arr.indexOf(dataToEdit);
-        arr[index] = newObj;
-        setAllData(arr)
+        editUser(newUserData)
+        handleEditMode()
         toggleModal()
     }
 
@@ -84,6 +83,7 @@ export default function Modal({ modalValue, toggleModal, addNewUser, dataToEdit,
         addNewUser(userObj)
         toggleModal()
     }
+
     const handleClose = () => {
         toggleModal()
         resetState()
@@ -91,9 +91,7 @@ export default function Modal({ modalValue, toggleModal, addNewUser, dataToEdit,
             handleEditMode()
         }
     }
-    const handleReset = () => {
-        resetState()
-    }
+
 
     return (
         <div>
@@ -148,9 +146,9 @@ export default function Modal({ modalValue, toggleModal, addNewUser, dataToEdit,
                             defaultValue='User Group'
                         >
                             <MenuItem disabled value=" " ><Typography sx={{ opacity: "0.5" }}>Choose User Group</Typography></MenuItem>
-                            <MenuItem value="office" >Office</MenuItem>
-                            <MenuItem value="manager">Manager</MenuItem>
-                            <MenuItem value="headoffice">Head Office</MenuItem>
+                            <MenuItem value="Office" >Office</MenuItem>
+                            <MenuItem value="Manager">Manager</MenuItem>
+                            <MenuItem value="Head Office">Head Office</MenuItem>
                         </Select>
 
                     </FormControl>
@@ -171,15 +169,22 @@ export default function Modal({ modalValue, toggleModal, addNewUser, dataToEdit,
 
                 </DialogContent>
                 <DialogActions style={{ display: 'flex', justifyContent: 'space-between', alignItems: "center" }}>
-                    <Box sx={{ cursor: "pointer" }} onClick={handleReset}>
+                    <Box sx={{ cursor: "pointer" }} onClick={resetState}>
                         <Typography sx={{ fontWeight: "bold", textDecoration: "underline", marginLeft: "20px", fontSize: "18px" }}> Reset Fields</Typography>
                     </Box>
                     <Box sx={{ display: "flex", justifyContent: "space-between" }}>
-                        <BlackTextButton onClick={toggleModal} variant="outlined">Cancel</BlackTextButton>
-                        {!editMode ? <Button sx={{ color: "white", bgcolor: "#22a565", textTransform: "capitalize" }} onClick={addUser}>Add User</Button> :
+                        <BlackTextButton onClick={handleClose} variant="outlined">Cancel</BlackTextButton>
+                        {!editMode ? <Button size='large'
+                            sx={{
+                                '&:hover': { backgroundColor: "#22a565" },
+                                margin: "20px 20px 10px 0", fontSize: "17px", color: "white", bgcolor: "#22a565", textTransform: "capitalize"
+                            }} onClick={addUser}>Add User</Button> :
                             <Button size='large'
-                                sx={{ margin: "20px 20px 10px 0", fontSize: "17px", color: "white", bgcolor: "#22a565", textTransform: "capitalize" }}
-                                onClick={editUser}>Edit User</Button>}
+                                sx={{
+                                    '&:hover': { backgroundColor: "#22a565" },
+                                    margin: "20px 20px 10px 0", fontSize: "17px", color: "white", bgcolor: "#22a565", textTransform: "capitalize"
+                                }}
+                                onClick={saveUserEdit}>Edit User</Button>}
                     </Box>
                 </DialogActions>
             </Dialog>
