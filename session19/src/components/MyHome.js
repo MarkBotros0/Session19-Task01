@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import DataGrid from '../components/DataGrid'
-import Modal from './Modal'
+import UseFormModal from './UseFormModal';
 import { Box, Button, Typography } from '@mui/material';
 
 const MyHome = () => {
@@ -45,25 +45,24 @@ const MyHome = () => {
   }
 
   const addNewUser = (newUser) => {
-    console.log(newUser)
     SetData(currData => [...currData, newUser])
   }
 
   const editUser = (newUserData) => {
-    const array = data;    
+    const array = data;
     var oldDataIndex = array.indexOf(dataToEdit);
     const newArray = array.map((value, index) => (index === oldDataIndex ? newUserData : value));
     SetData(newArray)
   }
 
-  const togglemodalWithData = (data) => {
+  const toggleModalEditMode = (data) => {
     toggleModal()
     SetDataToEdit(data)
     setEditMode(true)
   }
 
-  const handleEditMode = () => {
-    setEditMode(!editMode)
+  const handleEditMode = (value) => {
+    setEditMode(value)
   }
 
   useEffect(() => {
@@ -79,9 +78,9 @@ const MyHome = () => {
       <DataGrid
         filterUsers={filterUsers}
         deleteUsers={deleteUsers}
-        togglemodalWithData={togglemodalWithData}
+        toggleModalEditMode={toggleModalEditMode}
         data={filteredData} />
-      <Modal
+      <UseFormModal
         dataToEdit={dataToEdit}
         editUser={editUser}
         handleEditMode={handleEditMode}

@@ -11,7 +11,7 @@ const Clock = () => {
     return () => {
       clearInterval(timer);
     };
-  }, []);
+  });
 
   const options = {
     weekday: 'short',

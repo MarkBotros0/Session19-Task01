@@ -22,14 +22,14 @@ const columns = [
 ];
 
 
-export default function DataTable({ data, togglemodalWithData, deleteUsers, filterUsers }) {
+export default function DataTable({ data, toggleModalEditMode, deleteUsers, filterUsers }) {
     const [search, setSearch] = React.useState("");
     const [usernameSearch, setUsernameSearch] = React.useState('')
     const [userState, setUserState] = React.useState("any");
     const [selectedRows, setSelectedRows] = React.useState([]);
 
     const getRowData = (e) => {
-        togglemodalWithData(e.row)
+        toggleModalEditMode(e.row)
     }
 
     const searchUsersByAnyKey = (e) => {
@@ -52,8 +52,8 @@ export default function DataTable({ data, togglemodalWithData, deleteUsers, filt
         deleteUsers(selectedRows)
     }
 
-    const handleSelectionChange = (newSelection) => {
-        setSelectedRows(newSelection);
+    const handleSelectionChange = (selections) => {
+        setSelectedRows(selections);
     };
 
     const handleDeselectAll = () => {
@@ -155,8 +155,6 @@ export default function DataTable({ data, togglemodalWithData, deleteUsers, filt
                             <FileDownloadIcon />
                         </IconButton>
                     </Box>
-
-
                 </Box>
 
                 <ThemeProvider theme={theme} >
@@ -172,7 +170,7 @@ export default function DataTable({ data, togglemodalWithData, deleteUsers, filt
                         initialState={{
                             pagination: {
                                 paginationModel: { page: 0, pageSize: 10 },
-                            },
+                            }
                         }}
                     />
                 </ThemeProvider>

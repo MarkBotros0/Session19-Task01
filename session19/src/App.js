@@ -20,7 +20,8 @@ function App() {
             <Profiles />
           </MyLayout>} />
         <Route path='/groups'
-          element={<MyLayout>
+          element={
+          <MyLayout>
             <Groups />
           </MyLayout>}
         />
