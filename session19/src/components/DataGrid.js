@@ -32,6 +32,11 @@ export default function DataTable({ data, toggleModalEditMode, deleteUsers, filt
         toggleModalEditMode(e.row)
     }
 
+    const getRowDataByIndex = () => {
+        if (selectedRows.length == 1)
+            toggleModalEditMode(data[selectedRows-1])
+    }
+
     const searchUsersByAnyKey = (e) => {
         setSearch(e.target.value)
         filterUsers(e.target.value, usernameSearch, userState)
@@ -48,7 +53,6 @@ export default function DataTable({ data, toggleModalEditMode, deleteUsers, filt
     }
 
     const deleteDataOfUsers = () => {
-        console.log(selectedRows)
         deleteUsers(selectedRows)
     }
 
@@ -132,8 +136,8 @@ export default function DataTable({ data, toggleModalEditMode, deleteUsers, filt
                     <Box sx={{ display: "flex", alignItems: "center", marginTop: "10px", marginBottom: "10px", paddingLeft: "20px" }}>
                         <Typography variant='p' sx={{ marginRight: "10px" }}>{`${selectedRows.length} selected`}</Typography>
                         <Typography variant='p' sx={{ marginRight: "10px" }}>|</Typography>
-
-                        <IconButton sx={{ borderRadius: "5px", color: "#51576d", bgcolor: "#e7e9ef", marginRight: "10px" }} variant="contained" color="secondary">
+                        {/* hereajhsdjahbsdjashbdajsdha */}
+                        <IconButton onClick={getRowDataByIndex} sx={{ borderRadius: "5px", color: "#51576d", bgcolor: "#e7e9ef", marginRight: "10px" }} variant="contained" color="secondary">
                             <EditIcon />
                         </IconButton>
                         <IconButton onClick={deleteDataOfUsers} sx={{ borderRadius: "5px", color: "#51576d", bgcolor: "#e7e9ef", marginRight: "10px" }} variant="contained" color="secondary">
